@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weather_condition">
+        <item>Tornado</item>
+        <item>Tropical storm</item>
+        <item>Hurricane</item>
+        <item>Severe thunderstorms</item>
+        <item>Thunderstorms</item>
+        <item>Mixed rain and snow</item>
+        <item>Mixed rain and sleet</item>
+        <item>Mixed snow and sleet</item>
+        <item>Freezing drizzle</item>
+        <item>Drizzle</item>
+        <item>Freezing rain</item>
+        <item>Showers</item>
+        <item>Showers</item>
+        <item>Snow flurries</item>
+        <item>Light snow showers</item>
+        <item>Blowing snow</item>
+        <item>Snow</item>
+        <item>Hail</item>
+        <item>Sleet</item>
+        <item>Dust</item>
+        <item>Foggy</item>
+        <item>Haze</item>
+        <item>Smoky</item>
+        <item>Blustery</item>
+        <item>Windy</item>
+        <item>Cold</item>
+        <item>Cloudy</item>
+        <item>Mostly cloudy</item>
+        <item>Mostly cloudy</item>
+        <item>Partly cloudy</item>
+        <item>Partly cloudy</item>
+        <item>Clear</item>
+        <item>Sunny</item>
+        <item>Fair</item>
+        <item>Fair</item>
+        <item>Mixed rain and hail</item>
+        <item>Hot</item>
+        <item>Isolated thunderstorms</item>
+        <item>Scattered thunderstorms</item>
+        <item>Scattered thunderstorms</item>
+        <item>Scattered showers</item>
+        <item>Heavy snow</item>
+        <item>Scattered snow showers</item>
+        <item>Heavy snow</item>
+        <item>Partly cloudy</item>
+        <item>Thundershowers</item>
+        <item>Snow showers</item>
+        <item>Isolated thundershowers</item>
+    </string-array>
+    <string-array name="weather_day_normalform">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+    <string-array name="setting_auto_refresh_period_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="setting_unit_temp">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string-array name="setting_unit_temp_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="day_shortform">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUES</item>
+        <item>WED</item>
+        <item>THURS</item>
+        <item>FRI</item>
+        <item>SAT</item>
+    </string-array>
+    <string-array name="setting_auto_refresh_period">
+        <item>Never</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>1 day</item>
+    </string-array>
+</resources>

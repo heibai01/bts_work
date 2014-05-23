@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weather_condition">
+        <item>龙卷风</item>
+        <item>热带暴风雨</item>
+        <item>暴风</item>
+        <item>大雷雨</item>
+        <item>雷雨</item>
+        <item>雨加雪</item>
+        <item>雨加霰</item>
+        <item>雪加霰</item>
+        <item>冻毛雨</item>
+        <item>毛毛雨</item>
+        <item>冻雨</item>
+        <item>阵雨</item>
+        <item>阵雨</item>
+        <item>阵雪</item>
+        <item>小阵雪</item>
+        <item>大风雪</item>
+        <item>雪</item>
+        <item>冰雹</item>
+        <item>霰</item>
+        <item>尘霾</item>
+        <item>有雾</item>
+        <item>薄雾</item>
+        <item>尘雾</item>
+        <item>狂风</item>
+        <item>有风</item>
+        <item>寒冷</item>
+        <item>阴</item>
+        <item>多云</item>
+        <item>多云</item>
+        <item>晴间多云</item>
+        <item>晴间多云</item>
+        <item>晴</item>
+        <item>晴朗</item>
+        <item>晴</item>
+        <item>晴</item>
+        <item>雨加冰雹</item>
+        <item>炎热</item>
+        <item>局部雷雨</item>
+        <item>零星雷雨</item>
+        <item>零星雷雨</item>
+        <item>零星阵雨</item>
+        <item>大雪</item>
+        <item>零星阵雪</item>
+        <item>大雪</item>
+        <item>晴间多云</item>
+        <item>雷雨</item>
+        <item>阵雪</item>
+        <item>局部雷雨</item>
+    </string-array>
+    <string-array name="weather_day_normalform">
+        <item>星期日</item>
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+    </string-array>
+    <string-array name="setting_auto_refresh_period_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="setting_unit_temp">
+        <item>摄氏</item>
+        <item>华氏</item>
+    </string-array>
+    <string-array name="setting_unit_temp_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="day_shortform">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+    <string-array name="setting_auto_refresh_period">
+        <item>永不</item>
+        <item>1小时</item>
+        <item>2 小时</item>
+        <item>4 小时</item>
+        <item>8 小时</item>
+        <item>12 小时</item>
+        <item>1天</item>
+    </string-array>
+</resources>
