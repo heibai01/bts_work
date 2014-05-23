@@ -1,9 +1,12 @@
 package com.led.weatherdemo.net;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -11,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 import android.util.Log;
 
 import com.led.weatherdemo.ConstantValue;
+import com.led.weatherdemo.GlobalParams;
 
 public class HttpClientUtil {
 	private static final String TAG = "HttpClientUtil";
@@ -22,13 +26,13 @@ public class HttpClientUtil {
 
 	public HttpClientUtil() {
 		client = new DefaultHttpClient();
-//		// 判断是否需要设置代理信息
-//		if (StringUtils.isNotBlank(GlobalParams.PROXY)) {
-//			// 设置代理信息
-//			HttpHost host = new HttpHost(GlobalParams.PROXY, GlobalParams.PORT);
-//			client.getParams()
-//					.setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
-//		}
+		// 判断是否需要设置代理信息
+		if (StringUtils.isNotBlank(GlobalParams.PROXY)) {
+			// 设置代理信息
+			HttpHost host = new HttpHost(GlobalParams.PROXY, GlobalParams.PORT);
+			client.getParams()
+					.setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+		}
 	}
 
 	/**
@@ -77,7 +81,8 @@ public class HttpClientUtil {
 			// 判断是够请求成功
 			if (response.getStatusLine().getStatusCode() == 200) {
 				// 获取返回的数据
-				return EntityUtils.toString(response.getEntity(), ConstantValue.ENCONDING).trim();
+				return EntityUtils.toString(response.getEntity(),
+						ConstantValue.ENCONDING).trim();
 			}
 		} catch (Exception e) {
 			Log.e(TAG, url);

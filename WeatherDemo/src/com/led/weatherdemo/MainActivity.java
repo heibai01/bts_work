@@ -1,7 +1,6 @@
 package com.led.weatherdemo;
 
 import java.io.StringReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -19,7 +18,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -78,6 +76,7 @@ public class MainActivity extends Activity {
 	private static final int CHINESE = 1;
 	private static final int ENGLISH = 2;
 	private static final int WEATHER_IS_READY = 0;
+	protected static final int GET_WEATHER_SUCCESS = 1;
 
 	private Handler handler = new Handler() {
 
@@ -93,6 +92,105 @@ public class MainActivity extends Activity {
 				showWeatherInfos(temperature);
 				handler.sendEmptyMessageDelayed(WEATHER_IS_READY,
 						config.getUpdateFrequency() * 60 * 60);
+			} else if (msg.what == GET_WEATHER_SUCCESS) {
+				List<WeatherInfo> infos;
+				SAXParserFactory factory = null;
+				SAXParser saxParser = null;
+				XMLReader xmlReader = null;
+				GetYahooWeatherSaxTools tools = null;
+				try {
+					factory = SAXParserFactory.newInstance();
+					saxParser = factory.newSAXParser();
+					xmlReader = saxParser.getXMLReader();
+					infos = new ArrayList<WeatherInfo>();
+					tools = new GetYahooWeatherSaxTools(infos);
+
+					xmlReader.setContentHandler(tools);
+					xmlReader.parse(new InputSource(new StringReader(
+							(String) msg.obj)));
+					// 获取当前是周几,用数字表示
+					int currentDay = mWeekList.indexOf(infos.get(0).getDay());
+					int forecastDay = 0;
+					// 将得到的list天气数据,展示到屏幕上
+					for (int i = 0; i < config.getForecastDays(); i++) {
+						view = View.inflate(MainActivity.this,
+								R.layout.weather_item, null);
+						TextView tvDay = (TextView) view
+								.findViewById(R.id.tv_day);
+						TextView tvLow = (TextView) view
+								.findViewById(R.id.tv_temperature_low);
+						TextView tvHigh = (TextView) view
+								.findViewById(R.id.tv_temperature_high);
+						TextView tvWeather = (TextView) view
+								.findViewById(R.id.tv_weather);
+						ImageView ivWeatherIcon = (ImageView) view
+								.findViewById(R.id.iv_weather_icon);
+						forecastDay = currentDay + i;
+						if (forecastDay >= 7) {
+							forecastDay = forecastDay % 7;
+						}
+						tvDay.setText(getResources().getStringArray(
+								R.array.weather_day_normalform)[forecastDay]);
+						tvLow.setText(infos.get(i).getLow()
+								+ mShowTypeOfTemperature[config.getShowType()]);
+						tvHigh.setText(infos.get(i).getHigh()
+								+ mShowTypeOfTemperature[config.getShowType()]);
+						tvWeather.setText(getResources().getStringArray(
+								R.array.weather_condition)[infos.get(i)
+								.getCode()]);
+						ivWeatherIcon.setImageResource(R.drawable.w0);
+
+						int width = config.getWidth()
+								/ config.getForecastDays();
+						int height = config.getHeight();
+						float wScale = width / 100f;
+						float hScale = height / 100f;
+						float squarScale = width * height / (100 * 100);
+
+						LayoutParams viewChildParams = (LayoutParams) tvDay
+								.getLayoutParams();
+						viewChildParams.height *= hScale;
+						viewChildParams.width *= wScale;
+						tvDay.setLayoutParams(viewChildParams);
+
+						viewChildParams = (LayoutParams) tvLow
+								.getLayoutParams();
+						viewChildParams.height *= hScale;
+						viewChildParams.width *= wScale;
+						tvLow.setLayoutParams(viewChildParams);
+						tvHigh.setLayoutParams(viewChildParams);
+
+						viewChildParams = (LayoutParams) tvWeather
+								.getLayoutParams();
+						viewChildParams.height *= hScale;
+						viewChildParams.width *= wScale;
+						tvWeather.setLayoutParams(viewChildParams);
+
+						viewChildParams = (LayoutParams) ivWeatherIcon
+								.getLayoutParams();
+						viewChildParams.height *= hScale;
+						viewChildParams.width *= wScale;
+						ivWeatherIcon.setLayoutParams(viewChildParams);
+
+						tvDay.setTextSize(DensityUtil.dip2px(MainActivity.this,
+								14 * squarScale));
+						tvLow.setTextSize(DensityUtil.dip2px(MainActivity.this,
+								14 * squarScale));
+						tvHigh.setTextSize(DensityUtil.dip2px(
+								MainActivity.this, 14 * squarScale));
+						tvWeather.setTextSize(DensityUtil.dip2px(
+								MainActivity.this, 14 * squarScale));
+
+						LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(
+								LayoutParams.MATCH_PARENT,
+								LayoutParams.MATCH_PARENT);
+						viewParams.weight = 1;
+
+						mWeatherContainer.addView(view, viewParams);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			super.handleMessage(msg);
 		}
@@ -155,7 +253,8 @@ public class MainActivity extends Activity {
 		}
 		String mAndroidIdStr = Secure.getString(getContentResolver(),
 				Secure.ANDROID_ID);
-		mAndroidIdStr = mAndroidIdStr.replace("-", "").replace(" ", "").toUpperCase();
+		mAndroidIdStr = mAndroidIdStr.replace("-", "").replace(" ", "")
+				.toUpperCase();
 		mAndroidId = getLongAndroidId(mAndroidIdStr);
 		Long num = Long.parseLong(mAndroidId);
 		// 周列表,获取对应在数字,好直接从res/arrays获取不同国家的语言
@@ -201,139 +300,32 @@ public class MainActivity extends Activity {
 	 *            f/c
 	 */
 	private void showWeatherInfos(final String temperature) {
-
-		new AsyncTask<String, Void, String>() {
-			private List<WeatherInfo> infos;
-			SAXParserFactory factory = null;
-			SAXParser saxParser = null;
-			XMLReader xmlReader = null;
-			GetYahooWeatherSaxTools tools = null;
-
-			protected void onPreExecute() {
-				try {
-					factory = SAXParserFactory.newInstance();
-					saxParser = factory.newSAXParser();
-					xmlReader = saxParser.getXMLReader();
-					infos = new ArrayList<WeatherInfo>();
-					tools = new GetYahooWeatherSaxTools(infos);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			};
-
-			protected String doInBackground(String[] params) {
-				HttpClientUtil http = new HttpClientUtil();
-				mGetCityCodeUrl = ConstantValue.LEDPLAYER_URI
-						+ "/public/getCityCode.jsp?i=" + mAndroidId;
-				String cityCode = http.sendDataByGet(mGetCityCodeUrl);
-				if (cityCode != null && !cityCode.equals("0")) {
-					mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
-							+ cityCode + "&u=" + temperature;
-				} else {
+		new Thread() {
+			@Override
+			public void run() {
+//				HttpClientUtil http = new HttpClientUtil();
+//				mGetCityCodeUrl = ConstantValue.LEDPLAYER_URI
+//						+ "/public/getCityCode.jsp?i=" + mAndroidId;
+//				String cityCode = http.sendDataByGet(mGetCityCodeUrl);
+//				if (cityCode != null && !cityCode.equals("0")) {
+//					mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
+//							+ cityCode + "&u=" + temperature;
+//				} else {
 					mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
 							+ ConstantValue.SHENZHEN_CITYCODE + "&u="
 							+ temperature;
-				}
-				return http.sendDataByGet(mGetWeatherUrl);
-			};
+//				}
+				HttpClientUtil http = new HttpClientUtil();
+				String result = http.sendDataByGet(mGetWeatherUrl);
 
-			protected void onPostExecute(String result) {
 				if (result != null) {
-					Log.i("onPostExecute", "成功了");
-					try {
-						xmlReader.setContentHandler(tools);
-						xmlReader.parse(new InputSource(
-								new StringReader(result)));
-						// 获取当前是周几,用数字表示
-						int currentDay = mWeekList.indexOf(infos.get(0)
-								.getDay());
-						int forecastDay = 0;
-						// 将得到的list天气数据,展示到屏幕上
-						for (int i = 0; i < config.getForecastDays(); i++) {
-							view = View.inflate(MainActivity.this,
-									R.layout.weather_item, null);
-							TextView tvDay = (TextView) view
-									.findViewById(R.id.tv_day);
-							TextView tvLow = (TextView) view
-									.findViewById(R.id.tv_temperature_low);
-							TextView tvHigh = (TextView) view
-									.findViewById(R.id.tv_temperature_high);
-							TextView tvWeather = (TextView) view
-									.findViewById(R.id.tv_weather);
-							ImageView ivWeatherIcon = (ImageView) view
-									.findViewById(R.id.iv_weather_icon);
-							forecastDay = currentDay + i;
-							if (forecastDay >= 7) {
-								forecastDay = forecastDay % 7;
-							}
-							tvDay.setText(getResources().getStringArray(
-									R.array.weather_day_normalform)[forecastDay]);
-							tvLow.setText(infos.get(i).getLow()
-									+ mShowTypeOfTemperature[config
-											.getShowType()]);
-							tvHigh.setText(infos.get(i).getHigh()
-									+ mShowTypeOfTemperature[config
-											.getShowType()]);
-							tvWeather.setText(getResources().getStringArray(
-									R.array.weather_condition)[infos.get(i)
-									.getCode()]);
-							ivWeatherIcon.setImageResource(R.drawable.w0);
-
-							int width = config.getWidth()
-									/ config.getForecastDays();
-							int height = config.getHeight();
-							float wScale = width / 100f;
-							float hScale = height / 100f;
-							float squarScale = width * height / (100 * 100);
-
-							LayoutParams viewChildParams = (LayoutParams) tvDay
-									.getLayoutParams();
-							viewChildParams.height *= hScale;
-							viewChildParams.width *= wScale;
-							tvDay.setLayoutParams(viewChildParams);
-
-							viewChildParams = (LayoutParams) tvLow
-									.getLayoutParams();
-							viewChildParams.height *= hScale;
-							viewChildParams.width *= wScale;
-							tvLow.setLayoutParams(viewChildParams);
-							tvHigh.setLayoutParams(viewChildParams);
-
-							viewChildParams = (LayoutParams) tvWeather
-									.getLayoutParams();
-							viewChildParams.height *= hScale;
-							viewChildParams.width *= wScale;
-							tvWeather.setLayoutParams(viewChildParams);
-
-							viewChildParams = (LayoutParams) ivWeatherIcon
-									.getLayoutParams();
-							viewChildParams.height *= hScale;
-							viewChildParams.width *= wScale;
-							ivWeatherIcon.setLayoutParams(viewChildParams);
-
-							tvDay.setTextSize(DensityUtil.dip2px(
-									MainActivity.this, 14 * squarScale));
-							tvLow.setTextSize(DensityUtil.dip2px(
-									MainActivity.this, 14 * squarScale));
-							tvHigh.setTextSize(DensityUtil.dip2px(
-									MainActivity.this, 14 * squarScale));
-							tvWeather.setTextSize(DensityUtil.dip2px(
-									MainActivity.this, 14 * squarScale));
-
-							LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(
-									LayoutParams.MATCH_PARENT,
-									LayoutParams.MATCH_PARENT);
-							viewParams.weight = 1;
-
-							mWeatherContainer.addView(view, viewParams);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					Message msg = Message.obtain();
+					msg.what = GET_WEATHER_SUCCESS;
+					msg.obj = result;
+					handler.sendMessage(msg);
 				}
-			};
-		}.execute();
+			}
+		}.start();
 	}
 
 	@Override
@@ -343,8 +335,10 @@ public class MainActivity extends Activity {
 		mWeekList = null;
 		super.onDestroy();
 	}
+
 	/**
 	 * 根据android id返回一个数字字符串
+	 * 
 	 * @param parm
 	 * @return
 	 */
