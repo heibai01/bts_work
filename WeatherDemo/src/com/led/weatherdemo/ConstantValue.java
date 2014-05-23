@@ -10,9 +10,17 @@ public interface ConstantValue {
 	 */
 	String YAHOO_WEATHER_URI = "http://weather.yahooapis.com/forecastrss";
 	/**
+	 * LEDPlayer服务器地址
+	 */
+	String LEDPLAYER_URI = "http://192.168.3.109:18080";
+	/**
 	 * 字符编码
 	 */
 	String ENCONDING = "UTF-8";
+	/**
+	 * 默认城市代码 深圳
+	 */
+	String SHENZHEN_CITYCODE = "2161853";
 	
 	
 }
