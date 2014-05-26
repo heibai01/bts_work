@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="weather_condition">
         <item>龙卷风</item>
         <item>热带暴风雨</item>
@@ -94,4 +95,5 @@
         <item>12 小时</item>
         <item>1天</item>
     </string-array>
+
 </resources>

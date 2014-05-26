@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LedPlayer v_3.6.5</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="wifi_disconnected">disconnet AP!</string>
+    <string name="apname">AP-name:</string>
+    <string name="apmac">AP-MAC:</string>
+    <string name="localmac">Me-MAC:</string>
+    <string name="link_speed">speed:</string>
+    <string name="rssi">signal:</string>
+    
+    
+    <string name="ap_enabling">AP booting ……</string>
+    <string name="ap_enabled">AP Ready!</string>
+    <string name="ap_disabling">AP closing ……</string>
+    <string name="ap_disabled">AP Off!</string>
+    <string name="ap_connected">connected AP!</string>
+    <string name="ap_connecting">connecting AP……</string>
+    <string name="wifi_open">WIFI dev open!</string>
+    <string name="wifi_closed">WIFI dev off!</string>
+    <string name="shutdown_count">changed to client,off dev in 3s</string>
+    
+    
+    <string name="wififile_not_found">wifi-config lost</string>
+    <string name="parse_wifixml_fail">parse Network fail!</string>
+    <string name="wificonf_not_found">wifi-config lost</string>
+    <string name="wlan_card_state_innormal">network card not ok,reboot please</string>
+<!--     <string name="AP_boot_exception">热点启动异常请确认网卡是否存在~wifi开关目前：</string> -->
+    <string name="AP_boot_exception">AP boot fail,is wifi dev is ok?~state：</string>
+    <string name="sd_insert">"SD inserted"</string>
+    
+    <string name="delay5offscrn">off in 5s!</string>
+
+    
+</resources>

@@ -39,6 +39,7 @@ import com.led.weatherdemo.net.HttpClientUtil;
 import com.led.weatherdemo.util.BeanFactory;
 import com.led.weatherdemo.util.DensityUtil;
 import com.led.weatherdemo.util.GetYahooWeatherSaxTools;
+import com.led.weatherdemo.util.SystemInfo;
 
 /**
  * 天气预报显示
@@ -52,16 +53,23 @@ public class MainActivity extends Activity {
 	private String[] mShowTypeOfTemperature = { "°C", "°F" };
 	SharedPreferences sp;
 	private List<String> mWeekList;
-	private static char[] filterStr = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-			'V', 'W', 'X', 'Y', 'Z' };
-	private static char[] filterStrtoNum = { '7', '3', '8', '1', '5', '8', '0',
-			'4', '2', '8', '2', '3', '5', '7', '3', '9', '5', '4', '1', '5',
-			'6', '4', '3', '2', '1', '9' };
+	private static int[] weatherIcons = { R.drawable.w1, R.drawable.w2,
+			R.drawable.w3, R.drawable.w4, R.drawable.w5, R.drawable.w6,
+			R.drawable.w7, R.drawable.w8, R.drawable.w9, R.drawable.w10,
+			R.drawable.w11, R.drawable.w12, R.drawable.w13, R.drawable.w14,
+			R.drawable.w15, R.drawable.w16, R.drawable.w17, R.drawable.w18,
+			R.drawable.w19, R.drawable.w20, R.drawable.w21, R.drawable.w22,
+			R.drawable.w23, R.drawable.w24, R.drawable.w25, R.drawable.w26,
+			R.drawable.w27, R.drawable.w28, R.drawable.w29, R.drawable.w30,
+			R.drawable.w31, R.drawable.w32, R.drawable.w33, R.drawable.w34,
+			R.drawable.w35, R.drawable.w36, R.drawable.w37, R.drawable.w38,
+			R.drawable.w39, R.drawable.w40, R.drawable.w41, R.drawable.w42,
+			R.drawable.w43, R.drawable.w44, R.drawable.w45, R.drawable.w46,
+			R.drawable.w47 };
 	/**
 	 * 安卓终端唯一id标识
 	 */
-	private String mAndroidId;
+	private Long mAndroidId;
 	/**
 	 * 显示天气的容器，水平方向
 	 */
@@ -138,7 +146,7 @@ public class MainActivity extends Activity {
 						tvWeather.setText(getResources().getStringArray(
 								R.array.weather_condition)[infos.get(i)
 								.getCode()]);
-						ivWeatherIcon.setImageResource(R.drawable.w0);
+						ivWeatherIcon.setImageResource(weatherIcons[infos.get(i).getCode()-1]);
 
 						int width = config.getWidth()
 								/ config.getForecastDays();
@@ -251,12 +259,7 @@ public class MainActivity extends Activity {
 			getApplicationContext().startActivity(intent);
 			sp.edit().putInt("language", id).commit();
 		}
-		String mAndroidIdStr = Secure.getString(getContentResolver(),
-				Secure.ANDROID_ID);
-		mAndroidIdStr = mAndroidIdStr.replace("-", "").replace(" ", "")
-				.toUpperCase();
-		mAndroidId = getLongAndroidId(mAndroidIdStr);
-		Long num = Long.parseLong(mAndroidId);
+		mAndroidId = SystemInfo.getAndroidId(this);
 		// 周列表,获取对应在数字,好直接从res/arrays获取不同国家的语言
 		mWeekList = new ArrayList<String>();
 		mWeekList.add("Sun");
@@ -303,18 +306,17 @@ public class MainActivity extends Activity {
 		new Thread() {
 			@Override
 			public void run() {
-//				HttpClientUtil http = new HttpClientUtil();
-//				mGetCityCodeUrl = ConstantValue.LEDPLAYER_URI
-//						+ "/public/getCityCode.jsp?i=" + mAndroidId;
-//				String cityCode = http.sendDataByGet(mGetCityCodeUrl);
-//				if (cityCode != null && !cityCode.equals("0")) {
-//					mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
-//							+ cityCode + "&u=" + temperature;
-//				} else {
-					mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
-							+ ConstantValue.SHENZHEN_CITYCODE + "&u="
-							+ temperature;
-//				}
+				// HttpClientUtil http = new HttpClientUtil();
+				// mGetCityCodeUrl = ConstantValue.LEDPLAYER_URI
+				// + "/public/getCityCode.jsp?i=" + mAndroidId;
+				// String cityCode = http.sendDataByGet(mGetCityCodeUrl);
+				// if (cityCode != null && !cityCode.equals("0")) {
+				// mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
+				// + cityCode + "&u=" + temperature;
+				// } else {
+				mGetWeatherUrl = ConstantValue.YAHOO_WEATHER_URI + "?w="
+						+ ConstantValue.SHENZHEN_CITYCODE + "&u=" + temperature;
+				// }
 				HttpClientUtil http = new HttpClientUtil();
 				String result = http.sendDataByGet(mGetWeatherUrl);
 
@@ -334,39 +336,6 @@ public class MainActivity extends Activity {
 		mWeatherContainer = null;
 		mWeekList = null;
 		super.onDestroy();
-	}
-
-	/**
-	 * 根据android id返回一个数字字符串
-	 * 
-	 * @param parm
-	 * @return
-	 */
-	private static String getLongAndroidId(String parm) {
-		int tempi = -1;
-		String tempStr = "";
-		StringBuilder tempNum = new StringBuilder("");
-		for (int i = 0; i < parm.length(); i++) {
-			tempi = -1;
-			for (int j = 0; j < filterStr.length; j++) {
-				if (filterStr[j] == parm.charAt(i)) {
-					tempi = j;
-				}
-			}
-			if ((tempi >= 0) && (tempi <= 26)) {
-				tempStr = tempStr + filterStrtoNum[tempi];
-			}
-
-			if (tempi == -1) {
-				tempNum.append(parm.charAt(i));
-			}
-		}
-		tempStr = tempStr + tempNum;
-
-		if (tempStr.length() == 16)
-			return tempStr;
-		else
-			return tempStr;
 	}
 
 }
