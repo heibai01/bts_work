@@ -1,22 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.heibai.modeloclock"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <AnalogClock
-        android:id="@+id/ac_analog"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <com.heibai.modeloclock.view.MyAnalogClock
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
-
-    <SurfaceView
-        android:id="@+id/sv_model_clock"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="64dp" />
+        app:dial="@drawable/default_dail"
+        app:hand_hour="@drawable/default_clock_hour"
+        app:hand_minute="@drawable/default_clock_min"
+        app:hand_second="@drawable/default_clock_second" />
 
 </RelativeLayout>
