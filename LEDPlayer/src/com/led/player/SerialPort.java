@@ -1,7 +1,6 @@
 package com.led.player;
 
 import java.io.BufferedInputStream;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -13,6 +12,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -92,6 +94,11 @@ public class SerialPort {
 	private Timer timer;
 	private TimerTask task;
 	private TimerTask sendDataTask;
+	/**
+	 * 定时及周期性执行任务的线程池
+	 */
+	ScheduledExecutorService schedulePool;
+
 	private static Handler handler;
 
 	private byte[] commondata;
@@ -800,8 +807,10 @@ public class SerialPort {
 
 		@Override
 		public void run() {
+			schedulePool = Executors.newScheduledThreadPool(1);
 			dataReceBuffer = new byte[64];
 			pDataPre = 0;
+			boolean flag = true;
 			while (serialReadRunFlag) {// while(true)
 				int readLen;
 				int tempCount;
@@ -870,26 +879,19 @@ public class SerialPort {
 												apkAuthorizeFlag = false;
 										}
 									} else if (receComPack[5] == (byte) 0xd0) {
-										System.out
-												.println("Receive send message before send bundle-----");
+										Log.i(TAG, "======0xd0======");
 										temperature = receComPack[13];
 										humidity = receComPack[14];
 										getTempHumiFlag = true;
-										//发送数据
-										
-										if (sendDataTask == null) {
-											sendDataTask = new TimerTask() {
-												@Override
+										// 发送数据
+										if(flag){
+											schedulePool.scheduleAtFixedRate(new Runnable() {
 												public void run() {
 													sendSerialData2Server(receComPack);
 												}
-											};
-											Log.i(TAG, "执行发送数据前");
-											new Timer().schedule(sendDataTask,
-													0, 60 * 60 * 1000);
+											}, 0, 10, TimeUnit.SECONDS);
+											flag = false;
 										}
-										// sendSerialData2Server(receComPack);
-
 										// 发送数据。用handler去主线程，然后主线程又用
 										// 用tcpudpServer的sendUraData（）方法发送数据
 										sendByDirect();
@@ -959,54 +961,58 @@ public class SerialPort {
 	/**
 	 * Http请求向服务器发送串口16字节数据域
 	 */
-	private void sendSerialData2Server(final byte[] buff) {
+	private void sendSerialData2Server(byte[] buff) {
 		// 向服务器发送串口的数据
 		StringBuilder sb = new StringBuilder();
-		for (int i = 11; i < receComPack.length-1; i++) {
+		for (int i = 0; i < receComPack.length; i++) {
+
 			String hex = Integer.toHexString(receComPack[i] & 0xff);
-			if(hex.length()==1){
+			if (hex.length() == 1) {
 				hex = '0' + hex;
 			}
-			sb.append(hex);
+			sb.append(hex + ",");
 		}
-		String url = "";
-		try {
-			url = ConstantValue.LEDPLAYER_URI
-					+ "/public/TerminalState.jsp?i="
-					+ SystemInfo.getAndroidId(mContext) + "&m="
-					+ sb.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
+		String data = sb.substring(0, sb.length() - 1);
+		String url = ConstantValue.LEDPLAYER_URI
+				+ "/public/TerminalState.jsp?i=" + SystemInfo.getAndroidId(mContext) + "&m=" + data;
+		HttpClientUtil http = new HttpClientUtil();
+		String result = http.sendDataByGet(url);
+		Log.i(TAG, result + "===========");
+		if (result.equals("0") || result == null) {
+			try {
+				// 如果返回为0,需要校验数据,重新发送
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			sendSerialData2Server(buff);
 		}
-		Looper.prepare();
-
-		new AsyncTask<String, Void, String>() {
-			
-			@Override
-			protected String doInBackground(String... params) {
-				Log.i(TAG, params[0]);
-				HttpClientUtil http = new HttpClientUtil();
-				String result = http.sendDataByGet(params[0]);
-				Log.i(TAG, "发送串口服务器反馈:" + result);
-				return result;
-			}
-
-			@Override
-			protected void onPostExecute(String result) {
-				if (result != null) {
-					if (!result.equals("1")) {
-						try {
-							Thread.sleep(5000);
-							sendSerialData2Server(buff);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				super.onPostExecute(result);
-			}
-		}.execute(url);
-		Looper.loop();
+		// new AsyncTask<String, Void, String>() {
+		//
+		// @Override
+		// protected String doInBackground(String... params) {
+		// Log.i(TAG, params[0]);
+		// HttpClientUtil http = new HttpClientUtil();
+		// String result = http.sendDataByGet(params[0]);
+		// Log.i(TAG, "发送串口服务器反馈:" + result);
+		// return result;
+		// }
+		//
+		// @Override
+		// protected void onPostExecute(String result) {
+		// if (result != null) {
+		// if (!result.equals("1")) {
+		// try {
+		// Thread.sleep(5000);
+		// sendSerialData2Server(buff);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
+		// super.onPostExecute(result);
+		// }
+		// }.execute(url);
 	}
 
 	public boolean getTempDataFlag() {

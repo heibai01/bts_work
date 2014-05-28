@@ -1,5 +1,7 @@
 package com.led.player.utils;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +23,6 @@ public class HttpClientUtil {
 	private static final String TAG = "HttpClientUtil";
 
 	private HttpClient client;
-
 	private HttpPost post;
 	private HttpGet get;
 
@@ -55,8 +56,11 @@ public class HttpClientUtil {
 			HttpResponse response = client.execute(post);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				return EntityUtils.toString(response.getEntity(),
-						ConstantValue.ENCONDING);
+				// 获取返回的数据
+				HttpEntity entityByPost = response.getEntity();
+				String str = StreamTools.readFromStream(entityByPost.getContent()).trim();
+				Log.i(TAG, "str:" + str + " url:" + url);
+				return str;
 			}
 
 		} catch (Exception e) {
@@ -82,11 +86,12 @@ public class HttpClientUtil {
 			// 判断是够请求成功
 			if (response.getStatusLine().getStatusCode() == 200) {
 				// 获取返回的数据
-				String result = EntityUtils.toString(response.getEntity(), ConstantValue.ENCONDING);
-				return result;
+				HttpEntity entityByGet = response.getEntity();
+				String str = StreamTools.readFromStream(entityByGet.getContent()).trim();
+				Log.i(TAG, "str:" + str + " url:" + url);
+				return str;
 			}
 		} catch (Exception e) {
-			Log.e(TAG, url);
 			e.printStackTrace();
 		}
 		return null;

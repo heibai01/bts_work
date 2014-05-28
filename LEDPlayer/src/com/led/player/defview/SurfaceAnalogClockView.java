@@ -411,7 +411,7 @@ public class SurfaceAnalogClockView extends SurfaceView  implements Callback {
     	canvas.rotate(hDegree, px/2, py/2);         
     	Path path2 = new Path();            
     	path2.moveTo(px/2,py/2);         
-    	path2.lineTo(px/2,py/4);         
+    	path2.lineTo(px/2,py/4);
     	canvas.drawPath(path2, paint);         
     	canvas.restore();        
     	              

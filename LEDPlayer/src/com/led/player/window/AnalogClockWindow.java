@@ -7,16 +7,39 @@ import android.graphics.Color;
  *
  */
 public class AnalogClockWindow {
-
+	/**
+	 * 开始坐标
+	 */
 	private int StartX = 0;
 	private int StartY = 0;
+	/**
+	 * 宽高
+	 */
 	private int Width;
 	private int Heiht;
+	/**
+	 * 边框类型?
+	 */
 	private int BorderType;
+	/**
+	 * 背景颜色
+	 */
 	private int BgClr = Color.BLACK;
+	/**
+	 * 背景字
+	 */
 	private String BgWord;
+	/**
+	 * 是否显示日期
+	 */
 	private Boolean ShowDate = true;
+	/**
+	 * 是否显示星期
+	 */
 	private Boolean ShowWeek = true;
+	/**
+	 * TextView属性
+	 */
 	private TextViewAttr textviewattr = new TextViewAttr();
 	
 	public void setStartX(int par){

@@ -1,5 +1,12 @@
 package com.led.player.utils;
 
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import com.led.player.ConstantValue;
+
 import android.content.Context;
 import android.provider.Settings.Secure;
 
@@ -24,10 +31,12 @@ public class SystemInfo {
 
 	private SystemInfo() {
 	}
+
 	/**
 	 * 获取当前系统唯一id标识
+	 * 
 	 * @param context
-	 * @return 
+	 * @return
 	 */
 	public static Long getAndroidId(Context context) {
 		String mAndroidIdStr = Secure.getString(context.getContentResolver(),
@@ -69,6 +78,28 @@ public class SystemInfo {
 			return tempStr;
 		else
 			return tempStr;
+	}
+
+	/**
+	 * 板卡系统时间,会因为其他原因导致时间不准 从服务器获取当前时间,与板卡比对,如果误差大于30秒,将获取的时间设置为系统时间
+	 * 
+	 * @return
+	 */
+	private static void checkCurrentTime() {
+		ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+		service.scheduleAtFixedRate(new Runnable() {
+
+			public void run() {
+				HttpClientUtil http = new HttpClientUtil();
+				long currentTime = Long.parseLong(http
+						.sendDataByGet(ConstantValue.LEDPLAYER_URI
+								+ "/public/getTime.jsp"));
+				long num = currentTime - System.currentTimeMillis();
+				if (Math.abs(num) > 30 * 1000) {
+					SetTime.timeSynchronization(currentTime);
+				}
+			}
+		}, 0, 1, TimeUnit.HOURS);
 	}
 
 }

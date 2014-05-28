@@ -329,12 +329,11 @@ public class LedService extends Service{
 								e.printStackTrace();
 							}
 							boolean isParseOk = gpsSyncLoopParser.parseSyncLoopXml();
-Log.e("LedService", "解析syncloopxml成功否？："+isParseOk)							;
+							Log.e("LedService", "解析syncloopxml成功否？："+isParseOk);
 							if (isParseOk) {
 								Intent gpsIntent = new Intent("PLAY_SYNC_LOOP_PROGRAM");
 								gpsIntent.putExtra("path", "mnt/sdcard/syncloop_program/syncloopprogram.xml");
 								sendBroadcast(gpsIntent);
-								
 								//删除非播放文件
 								deleteNeedlessFile();
 							}else {
