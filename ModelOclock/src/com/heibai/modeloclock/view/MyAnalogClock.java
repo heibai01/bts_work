@@ -1,7 +1,5 @@
 package com.heibai.modeloclock.view;
 
-import com.heibai.modeloclock.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +7,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -18,6 +18,13 @@ import android.text.format.Time;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.heibai.modeloclock.R;
+/**
+ * 自定义时钟控件
+ * @author heibai
+ * @company http://www.bts-led.com/
+ * @date 2014年5月29日
+ */
 @SuppressLint("NewApi")
 public class MyAnalogClock extends View {
 
@@ -143,7 +150,6 @@ public class MyAnalogClock extends View {
 		mTickerStopped = true;// 当view从当前窗口中移除时，停止更新
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// 模式： UNSPECIFIED(未指定),父元素不对子元素施加任何束缚，子元素可以得到任意想要的大小；
@@ -218,8 +224,10 @@ public class MyAnalogClock extends View {
 		if (changed) {// 设置表盘图片位置。组件在容器X轴上的起点； 组件在容器Y轴上的起点； 组件的宽度；组件的高度
 			dial.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
 		}
-		dial.draw(canvas);// 这里才是真正把表盘图片画在画板上
-		canvas.save();// 一定要保存一下
+
+		// dial.draw(canvas);// 这里才是真正把表盘图片画在画板上
+		// canvas.save();// 一定要保存一下
+		drawClockPandle(canvas);
 		// 其次画日期
 		if (changed) {
 			w = (int) (mPaint.measureText(mWeek));// 计算文字的宽度
@@ -307,6 +315,66 @@ public class MyAnalogClock extends View {
 		default:
 			return "";
 		}
+	}
+	/**
+	 * 纯电脑绘制表盘
+	 * @param canvas
+	 */
+	private void drawClockPandle(Canvas canvas) {
+		int px = getMeasuredWidth();
+		int py = getMeasuredWidth();
+
+		
+		Path path = null;
+		Paint paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setColor(Color.RED);
+		paint.setStrokeWidth(6);
+		paint.setStyle(Style.STROKE);
+		Paint paintPoint = null;
+		int len = 0;
+		int radius = 0;
+		
+		//canvas.drawCircle(px / 2, py / 2, py / 2 - 1, paint);
+		canvas.drawCircle(px / 2, py / 2, py / 40, paint);
+		for(int i = 0; i<90; i+=6){
+			canvas.save();
+			if(i==0 || i==30 || i==60){
+				paint.setStrokeWidth(6);
+				path = new Path();
+				len = py / 25;
+				canvas.rotate(i, px / 2, py / 2);
+				path.moveTo(-len / 2, py / 2);
+				path.lineTo(len, py / 2);
+				canvas.drawPath(path, paint);
+				
+				path.moveTo(px / 2, -len / 2);
+				path.lineTo(px / 2, len);
+				canvas.drawPath(path, paint);
+				
+				path.moveTo(px + len / 2, py / 2);
+				path.lineTo(px - len, py / 2);
+				canvas.drawPath(path, paint);
+				
+				path.moveTo(px / 2, py + len / 2);
+				path.lineTo(px / 2, py - len);
+				canvas.drawPath(path, paint);
+				canvas.restore();
+			}else{
+				paintPoint = new Paint();
+				paintPoint.setColor(Color.GREEN);
+				paintPoint.setAntiAlias(true);
+				canvas.rotate(i, px / 2, py / 2);
+				radius = py / 60;
+				canvas.drawCircle(1, py / 2, radius, paintPoint);
+				canvas.drawCircle(px / 2, 1, radius, paintPoint);
+				canvas.drawCircle(px - 1, py / 2, radius, paintPoint);
+				canvas.drawCircle(px / 2, py - 1, radius, paintPoint);
+				canvas.restore();
+			}
+			
+		}		
+	
 	}
 
 }
