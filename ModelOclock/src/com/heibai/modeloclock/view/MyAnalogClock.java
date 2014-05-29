@@ -241,7 +241,7 @@ public class MyAnalogClock extends View {
 		paint.setStyle(Paint.Style.FILL);
 		/* 设置paint的外框宽度 */
 		paint.setStrokeWidth(3);
-		// 其次画日期
+		// 其次画日期 与 星期
 		canvas.save();// 一定要保存一下
 		mPaint.setTextSize(px / 8);
 		if (changed) {
@@ -258,15 +258,18 @@ public class MyAnalogClock extends View {
 			h = hourHand.getIntrinsicHeight();
 			hourHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
+
+			if (mDial == null) {// 画一个实心三角形
+				paint.setColor(Color.GRAY);
+				Path path1 = new Path();
+				path1.moveTo(px / 2 - px / 25, py / 2);
+				path1.lineTo(px / 2 + px / 25, py / 2);
+				path1.lineTo(px / 2, py / 6);
+				canvas.drawPath(path1, paint);
+			} else {
+				hourHand.draw(canvas);// 把时针画在画板上
+			}
 		}
-		// 画一个实心三角形
-		paint.setColor(Color.GRAY);
-		Path path1 = new Path();
-		path1.moveTo(px / 2 - px / 25, py / 2);
-		path1.lineTo(px / 2 + px / 25, py / 2);
-		path1.lineTo(px / 2, py / 6);
-		canvas.drawPath(path1, paint);
-		hourHand.draw(canvas);// 把时针画在画板上
 		canvas.restore();// 恢复画板到最初状态
 
 		canvas.save();
@@ -279,14 +282,16 @@ public class MyAnalogClock extends View {
 			minuteHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
 		}
-		// 画一个实心三角形
-		paint.setColor(Color.BLUE);
-		Path path2 = new Path();
-		path2.moveTo(px / 2 - px / 25, py / 2);
-		path2.lineTo(px / 2 + px / 25, py / 2);
-		path2.lineTo(px / 2, py / 12);
-		canvas.drawPath(path2, paint);
-		minuteHand.draw(canvas);
+		if (mDial == null) {// 画一个实心三角形
+			paint.setColor(Color.BLUE);
+			Path path2 = new Path();
+			path2.moveTo(px / 2 - px / 25, py / 2);
+			path2.lineTo(px / 2 + px / 25, py / 2);
+			path2.lineTo(px / 2, py / 12);
+			canvas.drawPath(path2, paint);
+		} else {
+			minuteHand.draw(canvas);
+		}
 		canvas.restore();
 
 		canvas.save();
@@ -299,15 +304,16 @@ public class MyAnalogClock extends View {
 			secondHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
 		}
-
-		// 画一个实心三角形
-		paint.setColor(Color.RED);
-		Path path3 = new Path();
-		path3.moveTo(px / 2 - px / 25, py / 2);
-		path3.lineTo(px / 2 + px / 25, py / 2);
-		path3.lineTo(px / 2, 0);
-		canvas.drawPath(path3, paint);
-		secondHand.draw(canvas);
+		if (mDial == null) {// 画一个实心三角形
+			paint.setColor(Color.RED);
+			Path path3 = new Path();
+			path3.moveTo(px / 2 - px / 25, py / 2);
+			path3.lineTo(px / 2 + px / 25, py / 2);
+			path3.lineTo(px / 2, 0);
+			canvas.drawPath(path3, paint);
+		} else {
+			secondHand.draw(canvas);
+		}
 		canvas.restore();
 
 		if (scaled) {
