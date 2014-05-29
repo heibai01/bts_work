@@ -74,7 +74,7 @@ public class MyAnalogClock extends View {
 		mMinuteHand = a.getDrawable(R.styleable.MyAnalogClock_hand_minute);
 		mSecondHand = a.getDrawable(R.styleable.MyAnalogClock_hand_second);
 
-		// 为了整体美观性，只要缺少一张图片，我们就用默认的那套图片000
+		// 为了整体美观性，只要缺少一张图片，我们就用默认的程序绘制
 		if (mDial == null || mHourHand == null || mMinuteHand == null
 				|| mSecondHand == null) {
 			mDial = r.getDrawable(R.drawable.default_dail);
@@ -84,7 +84,7 @@ public class MyAnalogClock extends View {
 		}
 		a.recycle();// 不调用这个函数，则上面的都是白费功夫
 
-		// 获取表盘的宽度和高度
+		// // 获取表盘的宽度和高度
 		mDialWidth = mDial.getIntrinsicWidth();
 		mDialHeight = mDial.getIntrinsicHeight();
 
@@ -229,7 +229,11 @@ public class MyAnalogClock extends View {
 
 		int px = getMeasuredWidth();
 		int py = getMeasuredWidth();
-		drawClockPandle(canvas, px, py);
+		if (mDial == null) {
+			drawClockPandle(canvas, px, py);
+		} else {
+			dial.draw(canvas);// 这里才是真正把表盘图片画在画板上
+		}
 		Paint paint = new Paint();
 		/* 去锯齿 */
 		paint.setAntiAlias(true);
@@ -237,14 +241,14 @@ public class MyAnalogClock extends View {
 		paint.setStyle(Paint.Style.FILL);
 		/* 设置paint的外框宽度 */
 		paint.setStrokeWidth(3);
-		// dial.draw(canvas);// 这里才是真正把表盘图片画在画板上
-		// canvas.save();// 一定要保存一下
 		// 其次画日期
+		canvas.save();// 一定要保存一下
+		mPaint.setTextSize(px / 8);
 		if (changed) {
 			w = (int) (mPaint.measureText(mWeek));// 计算文字的宽度
-			canvas.drawText(mWeek, (x - w / 2), y - (dialHeight / 8), mPaint);// 画文字在画板上，位置为中间两个参数
+			canvas.drawText(mWeek, (px / 2 - w / 2), py / 4, mPaint);// 画文字在画板上，位置为中间两个参数
 			w = (int) (mPaint.measureText(mDay));
-			canvas.drawText(mDay, (x - w / 2), y + (dialHeight / 8), mPaint);// 同上
+			canvas.drawText(mDay, (px / 2 - w / 2), py - (py / 4), mPaint);// 同上
 		}
 		// 再画时针
 		canvas.rotate(mHour / 12.0f * 360.0f, x, y);// 旋转画板，第一个参数为旋转角度，第二、三个参数为旋转坐标点
@@ -366,7 +370,6 @@ public class MyAnalogClock extends View {
 		int len = 0;
 		int radius = 0;
 
-		// canvas.drawCircle(px / 2, py / 2, py / 2 - 1, paint);
 		canvas.drawCircle(px / 2, py / 2, py / 40, paint);
 		for (int i = 0; i < 90; i += 6) {
 			canvas.save();
@@ -406,6 +409,22 @@ public class MyAnalogClock extends View {
 
 		}
 
+	}
+
+	public void setmHourHand(Drawable mHourHand) {
+		this.mHourHand = mHourHand;
+	}
+
+	public void setmMinuteHand(Drawable mMinuteHand) {
+		this.mMinuteHand = mMinuteHand;
+	}
+
+	public void setmSecondHand(Drawable mSecondHand) {
+		this.mSecondHand = mSecondHand;
+	}
+
+	public void setmDial(Drawable mDial) {
+		this.mDial = mDial;
 	}
 
 }
