@@ -19,8 +19,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.heibai.modeloclock.R;
+
 /**
  * 自定义时钟控件
+ * 
  * @author heibai
  * @company http://www.bts-led.com/
  * @date 2014年5月29日
@@ -225,9 +227,18 @@ public class MyAnalogClock extends View {
 			dial.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
 		}
 
+		int px = getMeasuredWidth();
+		int py = getMeasuredWidth();
+		drawClockPandle(canvas, px, py);
+		Paint paint = new Paint();
+		/* 去锯齿 */
+		paint.setAntiAlias(true);
+		/* 设置paint的 style 为STROKE：空心 FILL 实心 */
+		paint.setStyle(Paint.Style.FILL);
+		/* 设置paint的外框宽度 */
+		paint.setStrokeWidth(3);
 		// dial.draw(canvas);// 这里才是真正把表盘图片画在画板上
 		// canvas.save();// 一定要保存一下
-		drawClockPandle(canvas);
 		// 其次画日期
 		if (changed) {
 			w = (int) (mPaint.measureText(mWeek));// 计算文字的宽度
@@ -244,6 +255,13 @@ public class MyAnalogClock extends View {
 			hourHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
 		}
+		// 画一个实心三角形
+		paint.setColor(Color.GRAY);
+		Path path1 = new Path();
+		path1.moveTo(px / 2 - px / 25, py / 2);
+		path1.lineTo(px / 2 + px / 25, py / 2);
+		path1.lineTo(px / 2, py / 6);
+		canvas.drawPath(path1, paint);
 		hourHand.draw(canvas);// 把时针画在画板上
 		canvas.restore();// 恢复画板到最初状态
 
@@ -257,6 +275,13 @@ public class MyAnalogClock extends View {
 			minuteHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
 		}
+		// 画一个实心三角形
+		paint.setColor(Color.BLUE);
+		Path path2 = new Path();
+		path2.moveTo(px / 2 - px / 25, py / 2);
+		path2.lineTo(px / 2 + px / 25, py / 2);
+		path2.lineTo(px / 2, py / 12);
+		canvas.drawPath(path2, paint);
 		minuteHand.draw(canvas);
 		canvas.restore();
 
@@ -270,6 +295,14 @@ public class MyAnalogClock extends View {
 			secondHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
 					+ (h / 2));
 		}
+
+		// 画一个实心三角形
+		paint.setColor(Color.RED);
+		Path path3 = new Path();
+		path3.moveTo(px / 2 - px / 25, py / 2);
+		path3.lineTo(px / 2 + px / 25, py / 2);
+		path3.lineTo(px / 2, 0);
+		canvas.drawPath(path3, paint);
 		secondHand.draw(canvas);
 		canvas.restore();
 
@@ -316,15 +349,13 @@ public class MyAnalogClock extends View {
 			return "";
 		}
 	}
+
 	/**
 	 * 纯电脑绘制表盘
+	 * 
 	 * @param canvas
 	 */
-	private void drawClockPandle(Canvas canvas) {
-		int px = getMeasuredWidth();
-		int py = getMeasuredWidth();
-
-		
+	private void drawClockPandle(Canvas canvas, int px, int py) {
 		Path path = null;
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
@@ -334,12 +365,12 @@ public class MyAnalogClock extends View {
 		Paint paintPoint = null;
 		int len = 0;
 		int radius = 0;
-		
-		//canvas.drawCircle(px / 2, py / 2, py / 2 - 1, paint);
+
+		// canvas.drawCircle(px / 2, py / 2, py / 2 - 1, paint);
 		canvas.drawCircle(px / 2, py / 2, py / 40, paint);
-		for(int i = 0; i<90; i+=6){
+		for (int i = 0; i < 90; i += 6) {
 			canvas.save();
-			if(i==0 || i==30 || i==60){
+			if (i == 0 || i == 30 || i == 60) {
 				paint.setStrokeWidth(6);
 				path = new Path();
 				len = py / 25;
@@ -347,20 +378,20 @@ public class MyAnalogClock extends View {
 				path.moveTo(-len / 2, py / 2);
 				path.lineTo(len, py / 2);
 				canvas.drawPath(path, paint);
-				
+
 				path.moveTo(px / 2, -len / 2);
 				path.lineTo(px / 2, len);
 				canvas.drawPath(path, paint);
-				
+
 				path.moveTo(px + len / 2, py / 2);
 				path.lineTo(px - len, py / 2);
 				canvas.drawPath(path, paint);
-				
+
 				path.moveTo(px / 2, py + len / 2);
 				path.lineTo(px / 2, py - len);
 				canvas.drawPath(path, paint);
 				canvas.restore();
-			}else{
+			} else {
 				paintPoint = new Paint();
 				paintPoint.setColor(Color.GREEN);
 				paintPoint.setAntiAlias(true);
@@ -372,9 +403,9 @@ public class MyAnalogClock extends View {
 				canvas.drawCircle(px / 2, py - 1, radius, paintPoint);
 				canvas.restore();
 			}
-			
-		}		
-	
+
+		}
+
 	}
 
 }
