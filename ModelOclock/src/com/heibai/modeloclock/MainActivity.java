@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
 		MyAnalogClock mClock3 = new MyAnalogClock(this);
 		mClock3.setmDial(getResources().getDrawable(R.drawable.clock_dail_2));
 		mContainer.addView(mClock3, params);
-
 	}
 
 }
