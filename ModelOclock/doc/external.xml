@@ -1,0 +1,159 @@
+<LEDProject name="LED Project File V1.0">
+    <DisplayData>
+        <Count>1</Count>
+        <DisplayWindowData DisplayName="显示屏1">
+            <StartX>10</StartX>
+            <StartY>10</StartY>
+            <Width>800</Width>
+            <Height>600</Height>
+            <Top>true</Top>
+            <ShowWid>true</ShowWid>
+            <LockWid>true</LockWid>
+        </DisplayWindowData>
+    </DisplayData>
+    <PageData>
+        <DisplayWindowData DisplayName="显示屏1">
+            <PlayPageData PageName="基本页面1">
+                <PlayType>1</PlayType>
+                <PageType>1</PageType>
+                <BgClr>0</BgClr>
+                <BgPicPath></BgPicPath>
+                <BgPicDscptType>0</BgPicDscptType>
+                <PlayLength>30</PlayLength>
+                <PlayTimes>1</PlayTimes>
+                
+            <PlayWindowData WindowName="时钟窗口">
+                   <WindowType>1</WindowType>
+                   <WindowRotation>0</WindowRotation>
+                   <StartX>414</StartX>
+                   <StartY>277</StartY>
+                   <Width>357</Width>
+                   <Height>308</Height>
+                   <ClkType>0</ClkType>
+			<ProgramData ProgramName="">
+				<Skin>0</Skin>
+				<Transparence>10</Transparence>
+				<HourHandColor>123456</HourHandColor>
+				<MinuteHandColor>123456</MinuteHandColor>
+				<SecondHandColor>123456</SecondHandColor>
+				<HourPointColor>123456</HourPointColor>
+				<MinutePointColor>123456</MinutePointColor>
+				<Address>深圳</Address>
+				<ShowWeek>1</ShowWeek>
+				<ShowDate>1</ShowDate>
+			</ProgramData>
+		 </PlayWindowData>
+            </PlayPageData>
+            <PlayPageData PageName="基本页面2">
+                <PlayType>1</PlayType>
+                <PageType>1</PageType>
+                <BgClr>0</BgClr>
+                <BgPicPath></BgPicPath>
+                <BgPicDscptType>0</BgPicDscptType>
+                <PlayLength>30</PlayLength>
+                <PlayTimes>1</PlayTimes>
+                <PlayWindowData WindowName="复杂文本窗口">
+                    <WindowType>6</WindowType>
+                    <WindowRotation>0</WindowRotation>
+                    <StartX>0</StartX>
+                    <StartY>0</StartY>
+                    <Width>160</Width>
+                    <Height>120</Height>
+                    <BorderType>1</BorderType>
+                    <BorderColor>16777215</BorderColor>
+                    <ZOrder>0</ZOrder>
+                    <ProgramData ProgramName="">
+                        <ProType>31</ProType>
+                        <ProLen>15</ProLen>
+                        <IsFile>false</IsFile>
+                        <BgPicStrechType>0</BgPicStrechType>
+                        <BgPicPath></BgPicPath>
+                        <TransparentPercent>0</TransparentPercent>
+                        <Transparent>false</Transparent>
+                        <BgMscPath></BgMscPath>
+                        <Effects>1</Effects>
+                        <TxtSpeed>10</TxtSpeed>
+                        <Description>0</Description>
+                        <StayLine>10</StayLine>
+                        <ClearType>0</ClearType>
+                        <ClearSpeed>10</ClearSpeed>
+                        <BgClr>000000</BgClr>
+                        <FilePath></FilePath>
+                        <RichText>{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset0 MS Shell Dlg 2;}}&#x0D;&#x0A;\viewkind4\uc1\pard\lang2052\f0\fs17\par&#x0D;&#x0A;}&#x0D;&#x0A;</RichText>
+                        <FontSize>20</FontSize>
+                        <TextColor>FFFFFF</TextColor>
+                        <Bold>0</Bold>
+                        <Italic>0</Italic>
+                        <Underline>0</Underline>
+                    </ProgramData>
+                </PlayWindowData>
+                <PlayWindowData WindowName="温湿度窗口">
+                    <WindowType>2</WindowType>
+                    <WindowRotation>0</WindowRotation>
+                    <StartX>1</StartX>
+                    <StartY>123</StartY>
+                    <Width>160</Width>
+                    <Height>120</Height>
+                    <BorderType>1</BorderType>
+                    <BorderColor>16777215</BorderColor>
+                    <ZOrder>0</ZOrder>
+                    <ProgramData ProgramName="">
+                        <ProType>28</ProType>
+                        <ProLen>600000</ProLen>
+                        <IsFile>false</IsFile>
+                        <UpdateDis>200</UpdateDis>
+                        <BgClr>000000</BgClr>
+                        <BgPicShowType>0</BgPicShowType>
+                        <BgPicPath></BgPicPath>
+                        <BgTransparent>false</BgTransparent>
+                        <ProviceIdx>0</ProviceIdx>
+                        <CityIndex>0</CityIndex>
+                        <WordEffectType>0</WordEffectType>
+                        <WordEffectClr>32639</WordEffectClr>
+                        <MultiLine>true</MultiLine>
+                        <ShowType>1</ShowType>
+                        <HasWeather>false</HasWeather>
+                        <StrWeather>天 气 :</StrWeather>
+                        <HasTemperature>true</HasTemperature>
+                        <StrTemperature>温 度 :</StrTemperature>
+                        <HasHumidity>true</HasHumidity>
+                        <StrHumidity>湿 度 :</StrHumidity>
+                        <HasCurrentTemperature>false</HasCurrentTemperature>
+                        <StrCurrentTemperature>当前温度:</StrCurrentTemperature>
+                        <HasWind>false</HasWind>
+                        <StrWind>风 力 :</StrWind>
+                        <HasAir>false</HasAir>
+                        <StrAir>空 气 :</StrAir>
+                        <HasUltravioletRays>false</HasUltravioletRays>
+                        <StrUltravioletRays>紫外线:</StrUltravioletRays>
+                        <HasAirPressure>false</HasAirPressure>
+                        <StrAirPressure>气 压 :</StrAirPressure>
+                        <FontAttri>
+                            <lfCharSet>1</lfCharSet>
+                            <lfClipPrecision>0</lfClipPrecision>
+                            <lfEscapement>0</lfEscapement>
+                            <lfHeight>13</lfHeight>
+                            <lfItalic>0</lfItalic>
+                            <lfOrientation>0</lfOrientation>
+                            <lfOutPrecision>0</lfOutPrecision>
+                            <lfPitchAndFamily>0</lfPitchAndFamily>
+                            <lfQuality>0</lfQuality>
+                            <lfWidth>0</lfWidth>
+                            <lfWeight>0</lfWeight>
+                            <lfUnderline>0</lfUnderline>
+                            <lfStrikeOut>0</lfStrikeOut>
+                            <lfCharSet>1</lfCharSet>
+                            <lfCharSet>1</lfCharSet>
+                            <lfFaceName>1</lfFaceName>
+                        </FontAttri>
+                        <ShowTempeUnit>true</ShowTempeUnit>
+                        <ShowHumilUnit>false</ShowHumilUnit>
+                        <TemperUnit>0</TemperUnit>
+                        <WordClr>FFFFFF</WordClr>
+                        <CityName></CityName>
+                    </ProgramData>
+                </PlayWindowData>
+            </PlayPageData>
+        </DisplayWindowData>
+    </PageData>
+</LEDProject>

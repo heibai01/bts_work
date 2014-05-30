@@ -50,23 +50,23 @@ public class AnalogClockWindow {
 	/**
 	 * 时针颜色值
 	 */
-	private int hourHandColor;
+	private String hourHandColor;
 	/**
 	 * 分针颜色值
 	 */
-	private int minuteHandColor;
+	private String minuteHandColor;
 	/**
 	 * 秒针颜色值
 	 */
-	private int secondHandColor;
+	private String secondHandColor;
 	/**
 	 * 表盘时点颜色值
 	 */
-	private int hourPointColor;
+	private String hourPointColor;
 	/**
 	 * 表盘分点颜色值
 	 */
-	private int minutePointColor;
+	private String minutePointColor;
 	/**
 	 * 地名
 	 */
@@ -162,43 +162,43 @@ public class AnalogClockWindow {
 		this.transparence = transparence;
 	}
 
-	public int getHourHandColor() {
+	public String getHourHandColor() {
 		return hourHandColor;
 	}
 
-	public void setHourHandColor(int hourHandColor) {
+	public void setHourHandColor(String hourHandColor) {
 		this.hourHandColor = hourHandColor;
 	}
 
-	public int getMinuteHandColor() {
+	public String getMinuteHandColor() {
 		return minuteHandColor;
 	}
 
-	public void setMinuteHandColor(int minuteHandColor) {
+	public void setMinuteHandColor(String minuteHandColor) {
 		this.minuteHandColor = minuteHandColor;
 	}
 
-	public int getSecondHandColor() {
+	public String getSecondHandColor() {
 		return secondHandColor;
 	}
 
-	public void setSecondHandColor(int secondHandColor) {
+	public void setSecondHandColor(String secondHandColor) {
 		this.secondHandColor = secondHandColor;
 	}
 
-	public int getHourPointColor() {
+	public String getHourPointColor() {
 		return hourPointColor;
 	}
 
-	public void setHourPointColor(int hourPointColor) {
+	public void setHourPointColor(String hourPointColor) {
 		this.hourPointColor = hourPointColor;
 	}
 
-	public int getMinutePointColor() {
+	public String getMinutePointColor() {
 		return minutePointColor;
 	}
 
-	public void setMinutePointColor(int minutePointColor) {
+	public void setMinutePointColor(String minutePointColor) {
 		this.minutePointColor = minutePointColor;
 	}
 

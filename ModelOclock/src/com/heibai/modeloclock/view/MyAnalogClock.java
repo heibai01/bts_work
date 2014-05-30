@@ -1,5 +1,6 @@
 package com.heibai.modeloclock.view;
 
+import android.R.color;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,7 +30,29 @@ import com.heibai.modeloclock.R;
  */
 @SuppressLint("NewApi")
 public class MyAnalogClock extends View {
-
+	/*
+	 * <Skin>0</Skin> 0默认绘制,1皮肤, 2皮肤, 3皮肤 
+	 * <Transparence>10</Transparence> 透明度(1-100) 
+	 * <HourHandColor>123456</HourHandColor>时针颜色
+	 * <MinuteHandColor>123456</MinuteHandColor>分针颜色
+	 * <SecondHandColor>123456</SecondHandColor>秒针颜色
+	 * <HourPointColor>123456</HourPointColor>时标颜色
+	 * <MinutePointColor>123456</MinutePointColor>分标颜色 <Address>深圳</Address> 地址
+	 * <ShowWeek>1</ShowWeek>是否显示星期 1显示,0不显示 
+	 * <ShowDate>1</ShowDate>是否显示日期 1显示,0不显示
+	 */
+	
+	private int skin;
+	private int transparence;
+	private String hourHandColor;
+	private String minuteHandColor;
+	private String secondHandColor;
+	private String hourPointColor;
+	private String minutePointColor;
+	private int showWeek;
+	private int showDate;
+	private String address;
+	
 	private Time mCalendar;
 	/** 表盘,时针,分针,秒针 图片 */
 	private Drawable mHourHand;
@@ -213,7 +236,8 @@ public class MyAnalogClock extends View {
 		// int px = getMeasuredWidth();
 		// int py = getMeasuredWidth();
 
-		if (mDial != null && mHourHand != null && mMinuteHand != null && mSecondHand != null) {
+		if (mDial != null && mHourHand != null && mMinuteHand != null
+				&& mSecondHand != null) {
 			int w = mDial.getIntrinsicWidth();// 表盘宽度
 			int h = mDial.getIntrinsicHeight();
 			boolean scaled = false;
@@ -290,13 +314,19 @@ public class MyAnalogClock extends View {
 			mPaint.setTextSize(px / 8);
 			if (changed) {
 				int w = (int) (mPaint.measureText(mWeek));// 计算文字的宽度
-				canvas.drawText(mWeek, (px / 2 - w / 2), py / 4, mPaint);// 画文字在画板上，位置为中间两个参数
+				if(showWeek == 1)
+					canvas.drawText(mWeek, (px / 2 - w / 2), py / 4 + py / 8, mPaint);// 画文字在画板上，位置为中间两个参数
 				w = (int) (mPaint.measureText(mDay));
-				canvas.drawText(mDay, (px / 2 - w / 2), py - (py / 4), mPaint);// 同上
+				if(showDate == 1)
+					canvas.drawText(mDay, (px / 2 - w / 2), py - (py / 4), mPaint);// 同上
+				w = (int) (mPaint.measureText(address));
+				if(!("".equals(address) || address == null)){
+					canvas.drawText(address, (px / 2 - w / 2), py / 4, mPaint);
+				}
 			}
 			canvas.rotate(mHour / 12.0f * 360.0f, x, y);// 旋转画板，第一个参数为旋转角度，第二、三个参数为旋转坐标点
 			// 画一个实心三角形 时针
-			paint.setColor(Color.GRAY);
+			paint.setColor(Color.parseColor(hourHandColor));
 			Path path1 = new Path();
 			path1.moveTo(px / 2 - px / 25, py / 2);
 			path1.lineTo(px / 2 + px / 25, py / 2);
@@ -307,7 +337,7 @@ public class MyAnalogClock extends View {
 			canvas.save();
 			canvas.rotate(mMinutes / 60.0f * 360.0f, x, y);
 			// 画一个实心三角形 分针
-			paint.setColor(Color.BLUE);
+			paint.setColor(Color.parseColor(minuteHandColor));
 			Path path2 = new Path();
 			path2.moveTo(px / 2 - px / 25, py / 2);
 			path2.lineTo(px / 2 + px / 25, py / 2);
@@ -318,7 +348,7 @@ public class MyAnalogClock extends View {
 			canvas.save();
 			canvas.rotate(mSecond / 60.0f * 360.0f, x, y);
 			// 画一个实心三角形
-			paint.setColor(Color.RED);
+			paint.setColor(Color.parseColor(secondHandColor));
 			Path path3 = new Path();
 			path3.moveTo(px / 2 - px / 25, py / 2);
 			path3.lineTo(px / 2 + px / 25, py / 2);
@@ -376,7 +406,7 @@ public class MyAnalogClock extends View {
 		Path path = null;
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
-		paint.setColor(Color.RED);
+		paint.setColor(Color.parseColor(minutePointColor));
 		paint.setStrokeWidth(6);
 		paint.setStyle(Style.STROKE);
 		Paint paintPoint = null;
@@ -409,7 +439,7 @@ public class MyAnalogClock extends View {
 				canvas.restore();
 			} else {
 				paintPoint = new Paint();
-				paintPoint.setColor(Color.GREEN);
+				paintPoint.setColor(Color.parseColor(hourPointColor));
 				paintPoint.setAntiAlias(true);
 				canvas.rotate(i, px / 2, py / 2);
 				radius = py / 60;
@@ -438,6 +468,46 @@ public class MyAnalogClock extends View {
 
 	public void setmDial(Drawable mDial) {
 		this.mDial = mDial;
+	}
+
+	public void setSkin(int skin) {
+		this.skin = skin;
+	}
+
+	public void setTransparence(int transparence) {
+		this.transparence = transparence;
+	}
+
+	public void setHourHandColor(String hourHandColor) {
+		this.hourHandColor = hourHandColor;
+	}
+
+	public void setMinuteHandColor(String minuteHandColor) {
+		this.minuteHandColor = minuteHandColor;
+	}
+
+	public void setSecondHandColor(String secondHandColor) {
+		this.secondHandColor = secondHandColor;
+	}
+
+	public void setHourPointColor(String hourPointColor) {
+		this.hourPointColor = hourPointColor;
+	}
+
+	public void setMinutePointColor(String minutePointColor) {
+		this.minutePointColor = minutePointColor;
+	}
+
+	public void setShowWeek(int showWeek) {
+		this.showWeek = showWeek;
+	}
+
+	public void setShowDate(int showDate) {
+		this.showDate = showDate;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }
