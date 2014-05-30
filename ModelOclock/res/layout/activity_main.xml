@@ -12,6 +12,7 @@
         android:id="@+id/my_clock"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        app:dial="@drawable/default_dail"
         app:hand_hour="@drawable/default_clock_hour"
         app:hand_minute="@drawable/default_clock_min"
         app:hand_second="@drawable/default_clock_second" />
